@@ -11,8 +11,16 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
+import Teachers from "./pages/Teachers";
+import Blog from "./pages/Blog";
+import BlogArticle from "./pages/BlogArticle";
 import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
+import Activities from "./pages/Activities";
+import Payment from "./pages/Payment";
+import PaymentResult from "./pages/PaymentResult";
+import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -32,9 +40,17 @@ const App = () => (
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/events" element={<Events />} />
+                <Route path="/events/:id" element={<EventDetail />} />
+                <Route path="/teachers" element={<Teachers />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogArticle />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/activities" element={<Activities />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/payment-result" element={<PaymentResult />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="/auth" element={<Auth />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
