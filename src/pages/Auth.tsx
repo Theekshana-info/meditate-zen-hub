@@ -19,7 +19,12 @@ const passwordSchema = z.string()
 const signUpSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: passwordSchema,
+  confirmPassword: z.string(),
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
+  phone: z.string().min(10, 'Phone number must be at least 10 digits'),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 const signInSchema = z.object({
@@ -35,7 +40,9 @@ export default function Auth() {
   // Sign Up Form
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
   
   // Sign In Form
   const [signInEmail, setSignInEmail] = useState('');
@@ -58,19 +65,22 @@ export default function Auth() {
       const validated = signUpSchema.parse({
         email: signUpEmail,
         password: signUpPassword,
+        confirmPassword,
         fullName,
+        phone,
       });
 
       setLoading(true);
       
       const redirectUrl = `${window.location.origin}/`;
       
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: validated.email,
         password: validated.password,
         options: {
           data: {
             full_name: validated.fullName,
+            phone: validated.phone,
           },
           emailRedirectTo: redirectUrl,
         },
@@ -78,12 +88,26 @@ export default function Auth() {
 
       if (error) throw error;
 
+      // Update profile with phone number
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ phone: validated.phone })
+          .eq('id', data.user.id);
+
+        if (profileError) {
+          console.error('Profile update error:', profileError);
+        }
+      }
+
       toast.success('Account created! Please check your email to verify your account.');
       
       // Clear form
       setSignUpEmail('');
       setSignUpPassword('');
+      setConfirmPassword('');
       setFullName('');
+      setPhone('');
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach((err) => {
@@ -208,6 +232,17 @@ export default function Auth() {
                   />
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="+94 71 234 5678"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="signup-password">Password</Label>
                   <Input
                     id="signup-password"
@@ -223,6 +258,17 @@ export default function Auth() {
                     <li>• At least one number</li>
                     <li>• At least one symbol (@, #, $, %, &, *)</li>
                   </ul>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirm-password">Confirm Password</Label>
+                  <Input
+                    id="confirm-password"
+                    type="password"
+                    placeholder="Re-enter your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? 'Creating account...' : 'Sign Up'}
