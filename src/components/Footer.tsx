@@ -11,10 +11,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="font-semibold text-lg mb-4 gradient-primary bg-clip-text text-transparent">
-              Serenity
+              IIMC
             </h3>
             <p className="text-sm text-muted-foreground">
-              A sanctuary for mindfulness, meditation, and inner peace.
+              Isipathana International Meditation Center - A sanctuary for mindfulness, meditation, and inner peace.
             </p>
           </div>
 
@@ -70,7 +70,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Serenity Meditation Center. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Isipathana International Meditation Center (IIMC). All rights reserved.</p>
         </div>
       </div>
     </footer>

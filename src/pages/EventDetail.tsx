@@ -175,13 +175,33 @@ export default function EventDetail() {
             </div>
 
             {existingRegistration ? (
-              <div className="bg-muted p-4 rounded-lg">
-                <p className="text-center">
-                  You are already registered for this event
-                  <span className="ml-2 font-semibold">
-                    (Status: {existingRegistration.status})
-                  </span>
-                </p>
+              <div className="space-y-4">
+                <div className="bg-muted p-4 rounded-lg">
+                  <p className="text-center">
+                    You are already registered for this event
+                    <span className="ml-2 font-semibold">
+                      (Status: {existingRegistration.status})
+                    </span>
+                  </p>
+                </div>
+                {existingRegistration.status === 'pending' && event.price && event.price > 0 && (
+                  <Button
+                    size="lg"
+                    className="w-full"
+                    onClick={() => {
+                      navigate('/payment', {
+                        state: {
+                          amount: event.price,
+                          type: 'event_registration',
+                          relatedId: existingRegistration.id,
+                          description: `Registration for ${event.title}`,
+                        },
+                      });
+                    }}
+                  >
+                    Complete Payment
+                  </Button>
+                )}
               </div>
             ) : (
               <Button

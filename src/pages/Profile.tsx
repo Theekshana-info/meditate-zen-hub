@@ -6,9 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { User } from 'lucide-react';
+import { User, Calendar, DollarSign } from 'lucide-react';
+import { format } from 'date-fns';
 
 const profileSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters').max(100),
@@ -22,6 +25,8 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
+  const [events, setEvents] = useState<any[]>([]);
+  const [donations, setDonations] = useState<any[]>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -45,6 +50,38 @@ export default function Profile() {
         setProfile(profileData);
         setFullName(profileData.full_name || '');
         setPhone(profileData.phone || '');
+      }
+
+      // Load user's event registrations
+      const { data: eventRegs } = await supabase
+        .from('event_registrations')
+        .select(`
+          *,
+          events (
+            id,
+            title,
+            event_date,
+            location,
+            price
+          )
+        `)
+        .eq('user_id', user.id)
+        .order('registered_at', { ascending: false });
+
+      if (eventRegs) {
+        setEvents(eventRegs);
+      }
+
+      // Load user's donation history
+      const { data: paymentData } = await supabase
+        .from('payments')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('payment_type', 'donation')
+        .order('created_at', { ascending: false });
+
+      if (paymentData) {
+        setDonations(paymentData);
       }
     };
 
@@ -96,56 +133,188 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen py-20 gradient-hero">
-      <div className="container px-4 max-w-2xl">
+      <div className="container px-4 max-w-4xl">
         <h1 className="text-4xl font-bold text-center mb-12">My Profile</h1>
 
-        <Card className="shadow-glow">
-          <CardHeader>
-            <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src={profile?.avatar_url} />
-                <AvatarFallback>
-                  <User className="h-10 w-10" />
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <CardTitle>{fullName || 'User'}</CardTitle>
-                <CardDescription>{user.email}</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleUpdate} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <Input
-                  id="fullName"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required
-                />
-              </div>
+        <Tabs defaultValue="profile" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="events">My Events</TabsTrigger>
+            <TabsTrigger value="donations">Donations</TabsTrigger>
+          </TabsList>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number (optional)</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="+1234567890"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Format: +[country code][number]
-                </p>
-              </div>
+          <TabsContent value="profile">
+            <Card className="shadow-glow">
+              <CardHeader>
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-20 w-20">
+                    <AvatarImage src={profile?.avatar_url} />
+                    <AvatarFallback>
+                      <User className="h-10 w-10" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <CardTitle>{fullName || 'User'}</CardTitle>
+                    <CardDescription>{user.email}</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleUpdate} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName">Full Name</Label>
+                    <Input
+                      id="fullName"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      required
+                    />
+                  </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Updating...' : 'Update Profile'}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={user.email}
+                      disabled
+                      className="bg-muted"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number (optional)</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="+1234567890"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Format: +[country code][number]
+                    </p>
+                  </div>
+
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? 'Updating...' : 'Update Profile'}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="events">
+            <Card className="shadow-glow">
+              <CardHeader>
+                <CardTitle>My Event Registrations</CardTitle>
+                <CardDescription>
+                  View all events you have registered for
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {events.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">
+                    You haven't registered for any events yet.
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {events.map((eventReg: any) => (
+                      <Card key={eventReg.id} className="p-4">
+                        <div className="flex justify-between items-start">
+                          <div className="space-y-2">
+                            <h3 className="font-semibold text-lg">
+                              {eventReg.events?.title || 'Event'}
+                            </h3>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Calendar className="h-4 w-4" />
+                              <span>
+                                {eventReg.events?.event_date
+                                  ? format(new Date(eventReg.events.event_date), 'PPP')
+                                  : 'Date TBD'}
+                              </span>
+                            </div>
+                            {eventReg.events?.location && (
+                              <p className="text-sm text-muted-foreground">
+                                {eventReg.events.location}
+                              </p>
+                            )}
+                            {eventReg.events?.price && (
+                              <div className="flex items-center gap-2 text-sm">
+                                <DollarSign className="h-4 w-4" />
+                                <span>LKR {eventReg.events.price}</span>
+                              </div>
+                            )}
+                          </div>
+                          <Badge
+                            variant={
+                              eventReg.status === 'paid'
+                                ? 'default'
+                                : eventReg.status === 'pending'
+                                ? 'secondary'
+                                : 'outline'
+                            }
+                          >
+                            {eventReg.status}
+                          </Badge>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="donations">
+            <Card className="shadow-glow">
+              <CardHeader>
+                <CardTitle>Donation History</CardTitle>
+                <CardDescription>
+                  View all your contributions to IIMC
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {donations.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">
+                    You haven't made any donations yet.
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {donations.map((donation: any) => (
+                      <Card key={donation.id} className="p-4">
+                        <div className="flex justify-between items-center">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <DollarSign className="h-5 w-5 text-primary" />
+                              <span className="font-semibold text-lg">
+                                {donation.currency} {donation.amount}
+                              </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              {format(new Date(donation.created_at), 'PPP')}
+                            </p>
+                          </div>
+                          <Badge
+                            variant={
+                              donation.status === 'completed'
+                                ? 'default'
+                                : donation.status === 'pending'
+                                ? 'secondary'
+                                : 'outline'
+                            }
+                          >
+                            {donation.status}
+                          </Badge>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

@@ -9,9 +9,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+const passwordSchema = z.string()
+  .min(8, 'Password must be at least 8 characters')
+  .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+  .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+  .regex(/[0-9]/, 'Password must contain at least one number')
+  .regex(/[@#$%&*]/, 'Password must contain at least one symbol (@, #, $, %, &, *)');
+
 const signUpSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: passwordSchema,
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
 });
 
@@ -135,9 +142,9 @@ export default function Auth() {
     <div className="min-h-screen flex items-center justify-center p-4 gradient-hero">
       <Card className="w-full max-w-md shadow-glow">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Welcome</CardTitle>
+          <CardTitle className="text-2xl text-center">Welcome to IIMC</CardTitle>
           <CardDescription className="text-center">
-            Sign in to your account or create a new one
+            Isipathana International Meditation Center
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -209,9 +216,13 @@ export default function Auth() {
                     onChange={(e) => setSignUpPassword(e.target.value)}
                     required
                   />
-                  <p className="text-xs text-muted-foreground">
-                    Must be at least 6 characters
-                  </p>
+                  <ul className="text-xs text-muted-foreground space-y-1 mt-2">
+                    <li>• Minimum 8 characters</li>
+                    <li>• At least one uppercase letter</li>
+                    <li>• At least one lowercase letter</li>
+                    <li>• At least one number</li>
+                    <li>• At least one symbol (@, #, $, %, &, *)</li>
+                  </ul>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? 'Creating account...' : 'Sign Up'}

@@ -42,7 +42,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center space-x-2">
           <span className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-            Serenity
+            IIMC
           </span>
         </Link>
 

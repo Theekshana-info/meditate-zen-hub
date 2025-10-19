@@ -15,7 +15,7 @@ export function Hero() {
           backgroundImage: `url(${heroImage})`,
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/90" />
       </div>
 
       {/* Content */}
@@ -23,12 +23,12 @@ export function Hero() {
         <EditableText
           settingKey="hero_title"
           as="h1"
-          className="text-5xl md:text-7xl font-bold gradient-primary bg-clip-text text-transparent animate-fade-in"
+          className="text-5xl md:text-7xl font-bold text-foreground drop-shadow-lg animate-fade-in"
         />
         <EditableText
           settingKey="hero_subtitle"
           as="p"
-          className="text-xl md:text-2xl text-muted-foreground animate-fade-in"
+          className="text-xl md:text-2xl text-foreground/90 drop-shadow-md animate-fade-in"
         />
         <div className="flex flex-wrap gap-4 justify-center pt-6 animate-fade-in">
           <Button
