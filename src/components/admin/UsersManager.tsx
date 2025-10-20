@@ -10,6 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { Search, Eye } from 'lucide-react';
 
 export function UsersManager() {
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+
   const { data: users, isLoading } = useQuery({
     queryKey: ['admin-users'],
     queryFn: async () => {
@@ -58,8 +61,30 @@ export function UsersManager() {
     );
   }
 
+  const filteredUsers = users?.filter((user: any) => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      user.full_name?.toLowerCase().includes(searchLower) ||
+      user.email?.toLowerCase().includes(searchLower) ||
+      user.phone?.toLowerCase().includes(searchLower)
+    );
+  });
+
   return (
-    <div className="rounded-md border">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Users Management</h2>
+        <div className="relative w-64">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search users..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+      </div>
+      <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
@@ -73,8 +98,8 @@ export function UsersManager() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users && users.length > 0 ? (
-            users.map((user) => (
+          {filteredUsers && filteredUsers.length > 0 ? (
+            filteredUsers.map((user) => (
               <TableRow key={user.id}>
                 <TableCell className="font-medium">{user.full_name || 'N/A'}</TableCell>
                 <TableCell>{user.email || 'N/A'}</TableCell>
@@ -114,17 +139,28 @@ export function UsersManager() {
                 <TableCell>
                   {user.created_at ? format(new Date(user.created_at), 'PPP') : 'N/A'}
                 </TableCell>
+                <TableCell>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate(`/admin/users/${user.id}`)}
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    View
+                  </Button>
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                No users found
+              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                {searchTerm ? 'No users match your search' : 'No users found'}
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+      </div>
     </div>
   );
 }

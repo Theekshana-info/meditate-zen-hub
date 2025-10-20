@@ -295,17 +295,48 @@ export default function Profile() {
                               {format(new Date(donation.created_at), 'PPP')}
                             </p>
                           </div>
-                          <Badge
-                            variant={
-                              donation.status === 'completed'
-                                ? 'default'
-                                : donation.status === 'pending'
-                                ? 'secondary'
-                                : 'outline'
-                            }
-                          >
-                            {donation.status}
-                          </Badge>
+                          <div className="flex items-center gap-2">
+                            <Badge
+                              variant={
+                                donation.status === 'paid'
+                                  ? 'default'
+                                  : donation.status === 'pending'
+                                  ? 'secondary'
+                                  : 'outline'
+                              }
+                            >
+                              {donation.status}
+                            </Badge>
+                            {donation.status === 'pending' && (
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={async () => {
+                                  if (confirm('Delete this pending donation?')) {
+                                    const { error } = await supabase
+                                      .from('payments')
+                                      .delete()
+                                      .eq('id', donation.id);
+                                    
+                                    if (error) {
+                                      toast.error('Failed to delete donation');
+                                    } else {
+                                      toast.success('Pending donation deleted');
+                                      const { data } = await supabase
+                                        .from('payments')
+                                        .select('*')
+                                        .eq('user_id', user.id)
+                                        .eq('payment_type', 'donation')
+                                        .order('created_at', { ascending: false });
+                                      setDonations(data || []);
+                                    }
+                                  }
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </Card>
                     ))}
