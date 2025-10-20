@@ -9,6 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { EventRegistrationsView } from './EventRegistrationsView';
+import { Users } from 'lucide-react';
 import { Pencil, Trash2, Plus } from 'lucide-react';
 
 export function EventsManager() {
@@ -23,6 +25,8 @@ export function EventsManager() {
   const [price, setPrice] = useState('');
   const [capacity, setCapacity] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [showRegistrations, setShowRegistrations] = useState(false);
 
   const { data: events } = useQuery({
     queryKey: ['admin-events'],

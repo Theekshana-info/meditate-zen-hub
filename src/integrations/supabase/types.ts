@@ -181,6 +181,45 @@ export type Database = {
         }
         Relationships: []
       }
+      home_messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          end_date: string | null
+          id: string
+          is_visible: boolean | null
+          link_text: string | null
+          link_url: string | null
+          start_date: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          is_visible?: boolean | null
+          link_text?: string | null
+          link_url?: string | null
+          start_date?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          is_visible?: boolean | null
+          link_text?: string | null
+          link_url?: string | null
+          start_date?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           created_at: string | null
@@ -309,6 +348,36 @@ export type Database = {
           key?: string
           updated_at?: string | null
           value?: string
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          created_at: string | null
+          display_order: number | null
+          icon_name: string
+          id: string
+          is_active: boolean | null
+          platform: string
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number | null
+          icon_name: string
+          id?: string
+          is_active?: boolean | null
+          platform: string
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number | null
+          icon_name?: string
+          id?: string
+          is_active?: boolean | null
+          platform?: string
+          url?: string
         }
         Relationships: []
       }

@@ -1,4 +1,5 @@
 import { Hero } from '@/components/Hero';
+import { HomeMessage } from '@/components/HomeMessage';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -50,6 +51,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+      <HomeMessage />
       <Hero />
 
       {/* Features Section */}

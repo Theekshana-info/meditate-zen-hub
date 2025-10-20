@@ -2,7 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { format } from 'date-fns';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Eye } from 'lucide-react';
 
 export function UsersManager() {
   const { data: users, isLoading } = useQuery({
@@ -62,8 +67,9 @@ export function UsersManager() {
             <TableHead>Email</TableHead>
             <TableHead>Phone</TableHead>
             <TableHead>Roles</TableHead>
-            <TableHead>Event Registrations</TableHead>
+            <TableHead>Events</TableHead>
             <TableHead>Joined</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

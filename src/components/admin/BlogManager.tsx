@@ -18,7 +18,6 @@ export function BlogManager() {
   const [editingPost, setEditingPost] = useState<any>(null);
   
   const [title, setTitle] = useState('');
-  const [slug, setSlug] = useState('');
   const [content, setContent] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -74,7 +73,6 @@ export function BlogManager() {
 
   const resetForm = () => {
     setTitle('');
-    setSlug('');
     setContent('');
     setExcerpt('');
     setImageUrl('');
@@ -83,10 +81,13 @@ export function BlogManager() {
     setShowDialog(false);
   };
 
+  const generateSlug = (title: string) => {
+    return title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-').trim();
+  };
+
   const handleEdit = (post: any) => {
     setEditingPost(post);
     setTitle(post.title);
-    setSlug(post.slug);
     setContent(post.content);
     setExcerpt(post.excerpt || '');
     setImageUrl(post.image_url || '');
@@ -95,6 +96,7 @@ export function BlogManager() {
   };
 
   const handleSubmit = () => {
+    const slug = editingPost ? editingPost.slug : generateSlug(title);
     const postData = {
       title,
       slug,
@@ -169,10 +171,6 @@ export function BlogManager() {
               <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
             <div>
-              <Label htmlFor="slug">Slug (URL) *</Label>
-              <Input id="slug" value={slug} onChange={(e) => setSlug(e.target.value)} />
-            </div>
-            <div>
               <Label htmlFor="excerpt">Excerpt</Label>
               <Textarea id="excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} />
             </div>
@@ -189,7 +187,7 @@ export function BlogManager() {
               <Label htmlFor="published">Published</Label>
             </div>
             <div className="flex gap-2">
-              <Button onClick={handleSubmit} disabled={!title || !slug || !content}>
+              <Button onClick={handleSubmit} disabled={!title || !content}>
                 {editingPost ? 'Update' : 'Create'}
               </Button>
               <Button variant="outline" onClick={resetForm}>Cancel</Button>

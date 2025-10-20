@@ -108,6 +108,10 @@ export function Header() {
       {isOpen && (
         <div className="md:hidden border-t bg-background">
           <nav className="flex flex-col space-y-4 p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium">Theme</span>
+              <ThemeToggle />
+            </div>
             {navLinks.map((link) => (
               <Link
                 key={link.to}

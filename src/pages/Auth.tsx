@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const passwordSchema = z.string()
   .min(8, 'Password must be at least 8 characters')
@@ -164,6 +165,9 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 gradient-hero">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <Card className="w-full max-w-md shadow-glow">
         <CardHeader>
           <CardTitle className="text-2xl text-center">Welcome to IIMC</CardTitle>
