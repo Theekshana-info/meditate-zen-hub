@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      bank_details: {
+        Row: {
+          account_holder_name: string
+          account_number: string
+          bank_name: string
+          branch_name: string
+          created_at: string | null
+          display_order: number | null
+          id: string
+          is_active: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          account_holder_name: string
+          account_number: string
+          bank_name: string
+          branch_name: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          account_holder_name?: string
+          account_number?: string
+          bank_name?: string
+          branch_name?: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_id: string | null
@@ -102,6 +138,47 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      donations: {
+        Row: {
+          amount: number
+          created_at: string | null
+          donor_email: string | null
+          donor_message: string | null
+          donor_name: string | null
+          id: string
+          payment_id: string | null
+          status: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          donor_email?: string | null
+          donor_message?: string | null
+          donor_name?: string | null
+          id?: string
+          payment_id?: string | null
+          status?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          donor_email?: string | null
+          donor_message?: string | null
+          donor_name?: string | null
+          id?: string
+          payment_id?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "donations_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
             referencedColumns: ["id"]
           },
         ]

@@ -12,12 +12,18 @@ export default function Payment() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
 
-  const { amount, type, relatedId, description } = location.state || {};
+  const { amount, type, relatedId, description, isAnonymous, donationId } = location.state || {};
 
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       
+      // If anonymous donation, skip auth check
+      if (isAnonymous && type === 'donation') {
+        setUser({ id: 'anonymous' } as any);
+        return;
+      }
+
       if (!user) {
         navigate('/auth', { state: { from: { pathname: '/payment' } } });
         return;
@@ -32,7 +38,7 @@ export default function Payment() {
       toast.error('Invalid payment details');
       navigate('/');
     }
-  }, [navigate, amount, type]);
+  }, [navigate, amount, type, isAnonymous]);
 
   const handlePayment = async () => {
     if (!user) return;
@@ -60,14 +66,22 @@ export default function Payment() {
       if (error) throw error;
 
       // Create payment record
-      await supabase.from('payments').insert({
-        user_id: user.id,
+      const { data: paymentData } = await supabase.from('payments').insert({
+        user_id: user.id !== 'anonymous' ? user.id : null,
         amount,
         payment_type: type,
         related_id: relatedId,
         related_type: type,
         status: 'pending',
-      });
+      }).select().single();
+
+      // Update donation with payment_id if this is a donation
+      if (donationId && paymentData) {
+        await supabase
+          .from('donations')
+          .update({ payment_id: paymentData.id })
+          .eq('id', donationId);
+      }
 
       // Create PayHere form and submit
       const form = document.createElement('form');
@@ -83,9 +97,9 @@ export default function Payment() {
         items: data.items,
         currency: data.currency,
         amount: data.amount,
-        first_name: user.user_metadata?.full_name?.split(' ')[0] || 'User',
-        last_name: user.user_metadata?.full_name?.split(' ')[1] || '',
-        email: user.email,
+        first_name: user.id === 'anonymous' ? 'Donor' : (user.user_metadata?.full_name?.split(' ')[0] || 'User'),
+        last_name: user.id === 'anonymous' ? '' : (user.user_metadata?.full_name?.split(' ')[1] || ''),
+        email: user.id === 'anonymous' ? 'donor@anonymous.com' : user.email,
         phone: '',
         address: '',
         city: '',

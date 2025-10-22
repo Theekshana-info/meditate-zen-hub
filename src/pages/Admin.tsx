@@ -9,10 +9,11 @@ import { TeachersManager } from '@/components/admin/TeachersManager';
 import { UsersManager } from '@/components/admin/UsersManager';
 import { MessagesManager } from '@/components/admin/MessagesManager';
 import { DonationsManager } from '@/components/admin/DonationsManager';
+import BankDetailsManager from '@/components/admin/BankDetailsManager';
 import { SettingsManager } from '@/components/admin/SettingsManager';
 import { HomeMessagesManager } from '@/components/admin/HomeMessagesManager';
 import { SocialLinksManager } from '@/components/admin/SocialLinksManager';
-import { Calendar, BookOpen, Users, MessageSquare, Heart, Settings, GraduationCap } from 'lucide-react';
+import { Calendar, BookOpen, Users, MessageSquare, Heart, Settings, GraduationCap, Building2 } from 'lucide-react';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ export default function Admin() {
         <p className="text-muted-foreground mb-8">Manage your meditation center</p>
 
         <Tabs defaultValue="events" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-9 gap-2">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-10 gap-2">
             <TabsTrigger value="events" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span className="hidden sm:inline">Events</span>
@@ -90,6 +91,10 @@ export default function Admin() {
             <TabsTrigger value="donations" className="flex items-center gap-2">
               <Heart className="h-4 w-4" />
               <span className="hidden sm:inline">Donations</span>
+            </TabsTrigger>
+            <TabsTrigger value="bank-details" className="flex items-center gap-2">
+              <Building2 className="h-4 w-4" />
+              <span className="hidden sm:inline">Banks</span>
             </TabsTrigger>
             <TabsTrigger value="home-messages" className="flex items-center gap-2">
               <MessageSquare className="h-4 w-4" />
@@ -173,6 +178,18 @@ export default function Admin() {
               </CardHeader>
               <CardContent>
                 <DonationsManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="bank-details">
+            <Card>
+              <CardHeader>
+                <CardTitle>Bank Details</CardTitle>
+                <CardDescription>Manage bank accounts for direct donations</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <BankDetailsManager />
               </CardContent>
             </Card>
           </TabsContent>
