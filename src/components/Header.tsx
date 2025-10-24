@@ -33,6 +33,7 @@ export function Header() {
     { to: '/events', label: 'Events' },
     { to: '/teachers', label: 'Teachers' },
     { to: '/blog', label: 'Blog' },
+    { to: '/gallery', label: 'Gallery' },
     { to: '/contact', label: 'Contact' },
     { to: '/donate', label: 'Donate' },
   ];

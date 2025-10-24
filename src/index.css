@@ -219,6 +219,31 @@ All colors MUST be HSL.
     background-size: 1000px 100%;
   }
 
+  .animate-staggered-fade-up {
+    animation: fadeInUp 0.4s ease-out forwards;
+  }
+
+  .animate-lightbox-fade-zoom {
+    animation: fadeInScale 0.3s ease-out, fadeInUp 0.3s ease-out;
+  }
+
+  .animate-skeleton-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-masonry-reflow {
+    animation: fadeInScale 0.3s ease-out;
+  }
+
   .hover-lift {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }

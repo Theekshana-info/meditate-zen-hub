@@ -258,6 +258,57 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_images: {
+        Row: {
+          alt: string
+          created_at: string
+          date: string
+          display_order: number | null
+          height: number
+          id: string
+          is_featured: boolean | null
+          license: string | null
+          photographer: string | null
+          placeholder: string | null
+          src: string
+          tags: string[] | null
+          updated_at: string
+          width: number
+        }
+        Insert: {
+          alt: string
+          created_at?: string
+          date?: string
+          display_order?: number | null
+          height: number
+          id?: string
+          is_featured?: boolean | null
+          license?: string | null
+          photographer?: string | null
+          placeholder?: string | null
+          src: string
+          tags?: string[] | null
+          updated_at?: string
+          width: number
+        }
+        Update: {
+          alt?: string
+          created_at?: string
+          date?: string
+          display_order?: number | null
+          height?: number
+          id?: string
+          is_featured?: boolean | null
+          license?: string | null
+          photographer?: string | null
+          placeholder?: string | null
+          src?: string
+          tags?: string[] | null
+          updated_at?: string
+          width?: number
+        }
+        Relationships: []
+      }
       home_messages: {
         Row: {
           content: string
@@ -385,6 +436,7 @@ export type Database = {
           full_name: string | null
           id: string
           phone: string | null
+          role: string | null
           theme: string | null
         }
         Insert: {
@@ -394,6 +446,7 @@ export type Database = {
           full_name?: string | null
           id: string
           phone?: string | null
+          role?: string | null
           theme?: string | null
         }
         Update: {
@@ -403,6 +456,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           phone?: string | null
+          role?: string | null
           theme?: string | null
         }
         Relationships: []
@@ -568,10 +622,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "user" | "teacher" | "admin"

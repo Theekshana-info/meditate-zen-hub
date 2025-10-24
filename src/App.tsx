@@ -24,6 +24,7 @@ import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import UserDetail from "./pages/UserDetail";
+import Gallery from "./pages/Gallery";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
                 <Route path="/blog/:slug" element={<BlogArticle />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/donate" element={<Donate />} />
+                <Route path="/gallery" element={<Gallery />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/activities" element={<Activities />} />
                 <Route path="/payment" element={<Payment />} />

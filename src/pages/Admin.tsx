@@ -13,7 +13,8 @@ import BankDetailsManager from '@/components/admin/BankDetailsManager';
 import { SettingsManager } from '@/components/admin/SettingsManager';
 import { HomeMessagesManager } from '@/components/admin/HomeMessagesManager';
 import { SocialLinksManager } from '@/components/admin/SocialLinksManager';
-import { Calendar, BookOpen, Users, MessageSquare, Heart, Settings, GraduationCap, Building2 } from 'lucide-react';
+import { GalleryManager } from '@/components/admin/GalleryManager';
+import { Calendar, BookOpen, Users, MessageSquare, Heart, Settings, GraduationCap, Building2, Image } from 'lucide-react';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ export default function Admin() {
         <p className="text-muted-foreground mb-8">Manage your meditation center</p>
 
         <Tabs defaultValue="events" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-10 gap-2">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-11 gap-2">
             <TabsTrigger value="events" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span className="hidden sm:inline">Events</span>
@@ -95,6 +96,10 @@ export default function Admin() {
             <TabsTrigger value="bank-details" className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
               <span className="hidden sm:inline">Banks</span>
+            </TabsTrigger>
+            <TabsTrigger value="gallery" className="flex items-center gap-2">
+              <Image className="h-4 w-4" />
+              <span className="hidden sm:inline">Gallery</span>
             </TabsTrigger>
             <TabsTrigger value="home-messages" className="flex items-center gap-2">
               <MessageSquare className="h-4 w-4" />
@@ -190,6 +195,18 @@ export default function Admin() {
               </CardHeader>
               <CardContent>
                 <BankDetailsManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="gallery">
+            <Card>
+              <CardHeader>
+                <CardTitle>Photo Gallery</CardTitle>
+                <CardDescription>Manage gallery images and photos</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <GalleryManager />
               </CardContent>
             </Card>
           </TabsContent>
