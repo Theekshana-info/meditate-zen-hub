@@ -79,7 +79,7 @@ export default function Blog() {
                     <p className="text-muted-foreground line-clamp-3 mb-4">
                       {post.excerpt || post.content.substring(0, 150) + '...'}
                     </p>
-                    <Button onClick={() => navigate(`/blog/${post.slug}`)}>
+                    <Button onClick={() => navigate(`/blog/${post.id}`)}>
                       Read More
                     </Button>
                   </CardContent>
