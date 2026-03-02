@@ -1,28 +1,26 @@
-import { EditableText } from '@/components/EditableText';
+import { useSetting } from '@/hooks/useSetting';
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
 
 export default function About() {
-  return (
-    <div className="min-h-screen py-20">
-      <div className="container px-4 max-w-4xl">
-        <EditableText
-          settingKey="about_title"
-          as="h1"
-          className="text-4xl md:text-5xl font-bold text-center mb-6"
-        />
-        <EditableText
-          settingKey="about_content"
-          as="p"
-          multiline
-          className="text-lg text-muted-foreground text-center mb-12"
-        />
+  const { value: title } = useSetting('about_title');
+  const { value: content } = useSetting('about_content');
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+  return (
+    <div className="min-h-screen py-12 sm:py-20">
+      <div className="container px-4 max-w-4xl">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 sm:mb-6">
+          {title}
+        </h1>
+        <p className="text-base sm:text-lg text-muted-foreground text-center mb-8 sm:mb-12">
+          {content}
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mt-8 sm:mt-12">
           <Card className="shadow-soft">
             <CardContent className="pt-6">
-              <h3 className="text-2xl font-semibold mb-4">Our Mission</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl sm:text-2xl font-semibold mb-4">Our Mission</h3>
+              <p className="text-muted-foreground text-sm sm:text-base">
                 To provide a welcoming sanctuary where individuals can explore meditation practices,
                 cultivate mindfulness, and discover inner peace through authentic teachings and community support.
               </p>
@@ -31,8 +29,8 @@ export default function About() {
 
           <Card className="shadow-soft">
             <CardContent className="pt-6">
-              <h3 className="text-2xl font-semibold mb-4">Our Vision</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl sm:text-2xl font-semibold mb-4">Our Vision</h3>
+              <p className="text-muted-foreground text-sm sm:text-base">
                 To create a world where more people have access to the transformative power of meditation,
                 leading to greater compassion, awareness, and harmony in daily life.
               </p>
@@ -40,15 +38,15 @@ export default function About() {
           </Card>
         </div>
 
-        <div className="mt-16">
+        <div className="mt-12 sm:mt-16">
           <Card className="shadow-soft overflow-hidden">
             <CardContent className="p-0">
-              <div className="bg-gradient-to-br from-primary/5 to-primary/10 p-6">
+              <div className="bg-gradient-to-br from-primary/5 to-primary/10 p-4 sm:p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <MapPin className="h-6 w-6 text-primary" />
-                  <h3 className="text-2xl font-semibold">Our Location</h3>
+                  <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                  <h3 className="text-xl sm:text-2xl font-semibold">Our Location</h3>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm sm:text-base">
                   Visit us at Isipathana International Meditation Center
                 </p>
               </div>
@@ -64,12 +62,12 @@ export default function About() {
                   title="Isipathana International Meditation Center Location"
                 ></iframe>
               </div>
-              <div className="p-6 bg-muted/30">
+              <div className="p-4 sm:p-6 bg-muted/30">
                 <a
                   href="https://maps.app.goo.gl/GbqVBgsUCue7Vu8T8"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+                  className="inline-flex items-center gap-2 text-primary hover:underline font-medium text-sm sm:text-base"
                 >
                   <MapPin className="h-4 w-4" />
                   Open in Google Maps
