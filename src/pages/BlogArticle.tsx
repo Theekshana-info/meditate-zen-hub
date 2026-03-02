@@ -6,11 +6,11 @@ import { format } from 'date-fns';
 import { Calendar, User, ArrowLeft } from 'lucide-react';
 
 export default function BlogArticle() {
-  const { slug } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const { data: post, isLoading } = useQuery({
-    queryKey: ['blog-post', slug],
+    queryKey: ['blog-post', id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('blog_posts')
@@ -18,7 +18,7 @@ export default function BlogArticle() {
           *,
           profiles:author_id (full_name)
         `)
-        .eq('slug', slug)
+        .eq('id', id)
         .single();
 
       if (error) throw error;
