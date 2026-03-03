@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { EventRegistrationsView } from './EventRegistrationsView';
 import { Users } from 'lucide-react';
 import { Pencil, Trash2, Plus } from 'lucide-react';
+import { ImageUploadField } from './ImageUploadField';
 
 export function EventsManager() {
   const queryClient = useQueryClient();
@@ -200,10 +201,12 @@ export function EventsManager() {
                 <Input id="capacity" type="number" value={capacity} onChange={(e) => setCapacity(e.target.value)} />
               </div>
             </div>
-            <div>
-              <Label htmlFor="imageUrl">Image URL</Label>
-              <Input id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-            </div>
+            <ImageUploadField
+              label="Image"
+              value={imageUrl}
+              onChange={setImageUrl}
+              folder="events"
+            />
             <div className="flex gap-2">
               <Button onClick={handleSubmit} disabled={!title || !eventDate}>
                 {editingEvent ? 'Update' : 'Create'}

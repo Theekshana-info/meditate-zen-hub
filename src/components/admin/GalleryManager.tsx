@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Loader2, Trash2, Upload, X } from 'lucide-react';
+import { ImageUploadField } from './ImageUploadField';
 import { GalleryImage } from '@/hooks/useGallery';
 
 export const GalleryManager = () => {
@@ -132,12 +133,11 @@ export const GalleryManager = () => {
               </div>
 
               <div>
-                <Label htmlFor="src">Image URL *</Label>
-                <Input
-                  id="src"
+                <ImageUploadField
+                  label="Image"
                   value={formData.src}
-                  onChange={(e) => setFormData({ ...formData, src: e.target.value })}
-                  placeholder="https://..."
+                  onChange={(url) => setFormData({ ...formData, src: url })}
+                  folder="gallery"
                   required
                 />
               </div>

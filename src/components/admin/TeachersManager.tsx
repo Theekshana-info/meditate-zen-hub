@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
 import { Pencil, Trash2, Plus } from 'lucide-react';
+import { ImageUploadField } from './ImageUploadField';
 
 export function TeachersManager() {
   const queryClient = useQueryClient();
@@ -163,10 +164,12 @@ export function TeachersManager() {
               <Label htmlFor="bio">Bio</Label>
               <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value)} rows={4} />
             </div>
-            <div>
-              <Label htmlFor="imageUrl">Image URL</Label>
-              <Input id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-            </div>
+            <ImageUploadField
+              label="Image"
+              value={imageUrl}
+              onChange={setImageUrl}
+              folder="teachers"
+            />
             <div className="flex gap-2">
               <Button onClick={handleSubmit} disabled={!name}>
                 {editingTeacher ? 'Update' : 'Add'}
