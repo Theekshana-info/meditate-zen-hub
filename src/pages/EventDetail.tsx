@@ -171,7 +171,10 @@ export default function EventDetail() {
 
             <div className="border-t pt-6">
               <h3 className="text-xl font-semibold mb-4">About This Event</h3>
-              <p className="text-muted-foreground whitespace-pre-wrap">{event.description}</p>
+              <div
+                className="text-muted-foreground prose prose-sm dark:prose-invert max-w-none"
+                dangerouslySetInnerHTML={{ __html: event.description || '' }}
+              />
             </div>
 
             {existingRegistration ? (

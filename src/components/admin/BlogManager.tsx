@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { RichTextEditor } from './RichTextEditor';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Switch } from '@/components/ui/switch';
@@ -175,10 +176,11 @@ export function BlogManager() {
               <Label htmlFor="excerpt">Excerpt</Label>
               <Textarea id="excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} />
             </div>
-            <div>
-              <Label htmlFor="content">Content *</Label>
-              <Textarea id="content" value={content} onChange={(e) => setContent(e.target.value)} rows={8} />
-            </div>
+            <RichTextEditor
+              label="Content *"
+              value={content}
+              onChange={setContent}
+            />
             <ImageUploadField
               label="Image"
               value={imageUrl}

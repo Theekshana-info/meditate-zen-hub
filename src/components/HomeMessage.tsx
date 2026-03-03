@@ -48,9 +48,14 @@ export function HomeMessage() {
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm mb-1">{activeMessage.title}</p>
-              <p className="text-sm text-muted-foreground truncate sm:whitespace-normal">
-                {isLongContent ? `${activeMessage.content.substring(0, 100)}...` : activeMessage.content}
-              </p>
+              <div
+                className="text-sm text-muted-foreground truncate sm:whitespace-normal [&_*]:!m-0 [&_*]:!p-0"
+                dangerouslySetInnerHTML={{
+                  __html: isLongContent
+                    ? activeMessage.content.substring(0, 100) + '...'
+                    : activeMessage.content,
+                }}
+              />
             </div>
             <div className="flex items-center gap-2">
               {isLongContent && (
@@ -92,7 +97,10 @@ export function HomeMessage() {
             <DialogTitle>{expandedMessage?.title}</DialogTitle>
           </DialogHeader>
           <div className="mt-4">
-            <p className="text-muted-foreground whitespace-pre-wrap">{expandedMessage?.content}</p>
+            <div
+              className="text-muted-foreground prose prose-sm dark:prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: expandedMessage?.content || '' }}
+            />
             {expandedMessage?.link_url && (
               <Button
                 className="mt-4"
