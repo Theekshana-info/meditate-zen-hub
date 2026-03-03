@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { Pencil, Trash2, Plus } from 'lucide-react';
+import { ImageUploadField } from './ImageUploadField';
 
 export function BlogManager() {
   const queryClient = useQueryClient();
@@ -178,10 +179,12 @@ export function BlogManager() {
               <Label htmlFor="content">Content *</Label>
               <Textarea id="content" value={content} onChange={(e) => setContent(e.target.value)} rows={8} />
             </div>
-            <div>
-              <Label htmlFor="imageUrl">Image URL</Label>
-              <Input id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-            </div>
+            <ImageUploadField
+              label="Image"
+              value={imageUrl}
+              onChange={setImageUrl}
+              folder="blog"
+            />
             <div className="flex items-center gap-2">
               <Switch id="published" checked={published} onCheckedChange={setPublished} />
               <Label htmlFor="published">Published</Label>
