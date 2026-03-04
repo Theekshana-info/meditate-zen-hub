@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Calendar, MapPin, Users, DollarSign } from 'lucide-react';
+import { ScrollReveal } from '@/components/ScrollReveal';
 
 export default function Events() {
   const navigate = useNavigate();
@@ -33,55 +34,61 @@ export default function Events() {
   return (
     <div className="min-h-screen py-20 gradient-hero">
       <div className="container px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-6">Upcoming Events</h1>
-        <p className="text-lg text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
-          Join us for transformative meditation sessions, workshops, and retreats.
-        </p>
+        <ScrollReveal>
+          <h1 className="text-4xl md:text-5xl font-bold text-center mb-6">Upcoming Events</h1>
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <p className="text-lg text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+            Join us for transformative meditation sessions, workshops, and retreats.
+          </p>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events?.map((event) => (
-            <Card key={event.id} className="shadow-soft hover:shadow-glow transition-smooth">
-              {event.image_url && (
-                <img
-                  src={event.image_url}
-                  alt={event.title}
-                  className="w-full h-48 object-cover rounded-t-lg"
-                />
-              )}
-              <CardHeader>
-                <CardTitle>{event.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4" />
-                  {format(new Date(event.event_date), 'PPP')}
-                </div>
-                {event.location && (
+          {events?.map((event, index) => (
+            <ScrollReveal key={event.id} delay={index * 80}>
+              <Card className="shadow-soft hover:shadow-glow transition-smooth h-full">
+                {event.image_url && (
+                  <img
+                    src={event.image_url}
+                    alt={event.title}
+                    className="w-full h-48 object-cover rounded-t-lg"
+                  />
+                )}
+                <CardHeader>
+                  <CardTitle>{event.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <MapPin className="h-4 w-4" />
-                    {event.location}
+                    <Calendar className="h-4 w-4" />
+                    {format(new Date(event.event_date), 'PPP')}
                   </div>
-                )}
-                {event.capacity && (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Users className="h-4 w-4" />
-                    Capacity: {event.capacity}
-                  </div>
-                )}
-                {event.price !== null && (
-                  <div className="flex items-center gap-2 text-sm font-semibold">
-                    <DollarSign className="h-4 w-4" />
-                    {event.price > 0 ? `LKR ${event.price}` : 'Free'}
-                  </div>
-                )}
-                <p className="text-muted-foreground line-clamp-3">
-                  {event.description}
-                </p>
-                <Button className="w-full" onClick={() => navigate(`/events/${event.id}`)}>
-                  View Details
-                </Button>
-              </CardContent>
-            </Card>
+                  {event.location && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4" />
+                      {event.location}
+                    </div>
+                  )}
+                  {event.capacity && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Users className="h-4 w-4" />
+                      Capacity: {event.capacity}
+                    </div>
+                  )}
+                  {event.price !== null && (
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <DollarSign className="h-4 w-4" />
+                      {event.price > 0 ? `LKR ${event.price}` : 'Free'}
+                    </div>
+                  )}
+                  <p className="text-muted-foreground line-clamp-3">
+                    {event.description}
+                  </p>
+                  <Button className="w-full" onClick={() => navigate(`/events/${event.id}`)}>
+                    View Details
+                  </Button>
+                </CardContent>
+              </Card>
+            </ScrollReveal>
           ))}
         </div>
 
