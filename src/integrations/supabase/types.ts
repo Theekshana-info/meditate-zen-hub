@@ -309,6 +309,33 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_items: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          title: string
+          type: string
+          url: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          id?: string
+          title: string
+          type?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          title?: string
+          type?: string
+          url?: string
+        }
+        Relationships: []
+      }
       home_messages: {
         Row: {
           content: string

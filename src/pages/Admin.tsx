@@ -84,7 +84,7 @@ export default function Admin() {
       messages: { title: 'Messages', desc: 'View contact form submissions', component: <MessagesManager /> },
       donations: { title: 'Donations & Payments', desc: 'View payment history', component: <DonationsManager /> },
       'bank-details': { title: 'Bank Details', desc: 'Manage bank accounts for direct donations', component: <BankDetailsManager /> },
-      gallery: { title: 'Photo Gallery', desc: 'Manage gallery images and photos', component: <GalleryManager /> },
+      gallery: { title: 'Gallery Manager', desc: 'Manage gallery images and videos', component: <GalleryManager /> },
       'home-messages': { title: 'Home Messages', desc: 'Manage homepage announcements', component: <HomeMessagesManager /> },
       'social-links': { title: 'Social Links', desc: 'Manage footer social media links', component: <SocialLinksManager /> },
       settings: { title: 'Site Settings', desc: 'Configure site-wide settings', component: <SettingsManager /> },
